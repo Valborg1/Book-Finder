@@ -1,0 +1,27 @@
+/* Heading styles down below */
+.card {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+
+/* Novel search style down below */
+
+.novelSearch {
+    float: left;
+    width: 33%;
+}
+
+/* title styles down below */
+.title {
+    float: left;
+    width: 33%;
+}
+
+/* readingList styles down below */
+
+.readingList {
+    float: left;
+    width: 33%;
+}
