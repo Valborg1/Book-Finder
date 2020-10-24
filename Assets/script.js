@@ -57,37 +57,71 @@ $.ajax({
     bookResult.addClass("search-results");
     bookResult.attr("id", response.items[i].id)
     
-    var title = $("<h3>");
-    var author = $("<p>");
-    var publishedDate = $("<p>");
-    var description = $("<p>");
-    var img = $("<img>");
-    var row = $("<div>");
-    var addBtn = $("<button>");
+    var titleRow = $("<div>");
+    titleRow.addClass("row");
 
-    title.text(titleAPI);
-    bookResult.append(title);
+        var titleCol = $("<div>");
+        titleCol.addClass("col-8");
 
-    author.text("Author: " + authorAPI);
-    bookResult.append(author);
+            var title = $("<h3>");
+            title.text(titleAPI)
+    
+        var btnCol = $("<div>");
+        btnCol.addClass("col-4");
 
-    publishedDate.text("Published: " + trimPubDateAPI);
-    bookResult.append(publishedDate);
+            var addBtn = $("<button>");
+            addBtn.text("Add to Reading List");
+            addBtn.addClass("btn btn-secondary addToList")
 
-    description.text(trimDescAPI + "...");
-    bookResult.append(description);
+    var main = $("<div>");
+    main.addClass("main-wapper");
 
-    img.attr("src", imgAPI);
-    bookResult.append(img);
+        var row = $("<div>");
+        row.addClass("row");
 
-    row.addClass("row");
-    addBtn.text("Add to Reading List");
-    addBtn.addClass("btn btn-secondary addToList")
+        var col1 = $("<div>");
+        col1.addClass("col-2")
 
-    row.append(addBtn);
-    bookResult.append(row);
+            var img = $("<img>");
+            img.addClass("img-fluid");
+            img.attr("src", imgAPI);
 
-    // Append Final Div for Result Item
+        var col2 = $("<div>");
+        col2.addClass("col-10");
+
+            var author = $("<p>");
+            author.text("Author: " + authorAPI);
+            var publishedDate = $("<p>");
+            publishedDate.text("Published: " + trimPubDateAPI);
+            var description = $("<p>");
+            description.text(trimDescAPI + "...");
+
+    // DYNAMICALLY CREATE RESULT
+    
+    // Create Row for Title and Btn
+    bookResult.append(titleRow)
+
+    titleCol.append(title);
+    titleRow.append(titleCol);
+   
+    btnCol.append(addBtn);
+    titleRow.append(btnCol);
+
+    // Create a Row for Two Columns and All Info
+    bookResult.append(main);
+    main.append(row);
+
+    // Create Column1 and IMG
+    col1.append(img);
+    row.append(col1);
+
+    // Create Col2 and INFO
+    col2.append(author);
+    col2.append(publishedDate);
+    col2.append(description);
+    row.append(col2);
+
+    // Append Full Result DIV
     $("#results").append(bookResult);
     };
 
@@ -98,12 +132,10 @@ $.ajax({
 $(document).on("click", "button.addToList", function(e){
     e.preventDefault();
     
-    var id = $(this).parent().parent().attr("id");
+    var id = $(this).parent().parent().parent().attr("id");
     
     listURL = "https://www.googleapis.com/books/v1/volumes/" + id
 
-
-    
     $.ajax({
         url : listURL,
         method : "GET"
