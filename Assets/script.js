@@ -54,24 +54,24 @@ $.ajax({
 
     // Create Elements for Results
     var bookResult = $("<div>");
-    bookResult.addClass("search-results");
+    bookResult.addClass("search-results bg-light");
     bookResult.attr("id", response.items[i].id)
     
     var titleRow = $("<div>");
     titleRow.addClass("row");
 
         var titleCol = $("<div>");
-        titleCol.addClass("col-8");
+        titleCol.addClass("col-9");
 
             var title = $("<h3>");
             title.text(titleAPI)
     
         var btnCol = $("<div>");
-        btnCol.addClass("col-4");
+        btnCol.addClass("col-3");
 
             var addBtn = $("<button>");
             addBtn.text("Add to Reading List");
-            addBtn.addClass("btn btn-secondary addToList")
+            addBtn.addClass("btn btn-secondary float-right addToList")
 
     var main = $("<div>");
     main.addClass("main-wapper");
