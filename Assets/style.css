@@ -4,18 +4,10 @@
     border-radius: 25px;
 }
 
-button.addToList {
+button.addToList, button.removeFromList {
     display: none;
 }
 
-.search-results:hover button.addToList {
-   display: block;
-}
-
-button.removeFromList {
-    display: none;
-}
-
-.list-item:hover button.removeFromList {
+.search-results:hover button.addToList, .list-item:hover button.removeFromList {
    display: block;
 }

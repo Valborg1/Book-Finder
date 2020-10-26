@@ -1,9 +1,6 @@
 var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 
-
-// var queryURL = "https://www.googleapis.com/books/v1/volumes?q=+inauthor:smith&key=AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM" + APIKey
-
-
+// Main Search Functionality
 $("#searchButton").on("click", function(e){
     e.preventDefault();
     $("#results").text("");
@@ -75,7 +72,7 @@ $.ajax({
         btnCol.addClass("col-4");
 
             var addBtn = $("<button>");
-            addBtn.text("Add to Reading List");
+            addBtn.text("+Reading List");
             addBtn.addClass("btn btn-secondary float-right addToList")
 
     var main = $("<div>");
@@ -134,11 +131,11 @@ $.ajax({
 
 });
 
+// Check Local Storage for Reading List and Populate
 var readingList;
 var list = JSON.parse(localStorage.getItem("readingList")) || [];
 
 if (list) {
-    console.log("there is a list")
     readingList = list
     
     for (var k = 0; k < list.length; k++) {
@@ -148,7 +145,7 @@ if (list) {
 }
 
 
-
+// Add a book to the Reading List
 $("#results").on("click", "button.addToList", function(e){
     e.preventDefault();
     
@@ -185,7 +182,7 @@ $(".readingList").on("click", "button.removeFromList", function (e){
 }); 
 
 
-
+// Function to Create a Reading List Item in the DOM
 function populateReadingList() {
     $.ajax({
         url : listURL,
