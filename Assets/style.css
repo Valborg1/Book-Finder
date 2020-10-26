@@ -1,4 +1,13 @@
 .search-results {
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+button.addToList, button.removeFromList {
+    display: none;
+}
+
+.search-results:hover button.addToList, .list-item:hover button.removeFromList {
+   display: block;
 }

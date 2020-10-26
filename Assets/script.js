@@ -1,14 +1,16 @@
 var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 
-
-// var queryURL = "https://www.googleapis.com/books/v1/volumes?q=+inauthor:smith&key=AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM" + APIKey
-
-
-$("#searchButton").on("click", function(){
+// Main Search Functionality
+$("#searchButton").on("click", function(e){
+    e.preventDefault();
     $("#results").text("");
 
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
+
+if (!searchTitle && !searchAuthor) {
+    alert("Please enter either a title or author.")
+}
 
 var title;
 var author;
@@ -61,16 +63,16 @@ $.ajax({
     titleRow.addClass("row");
 
         var titleCol = $("<div>");
-        titleCol.addClass("col-9");
+        titleCol.addClass("col-8");
 
             var title = $("<h3>");
             title.text(titleAPI)
     
         var btnCol = $("<div>");
-        btnCol.addClass("col-3");
+        btnCol.addClass("col-4");
 
             var addBtn = $("<button>");
-            addBtn.text("Add to Reading List");
+            addBtn.text("+Reading List");
             addBtn.addClass("btn btn-secondary float-right addToList")
 
     var main = $("<div>");
@@ -129,13 +131,59 @@ $.ajax({
 
 });
 
-$(document).on("click", "button.addToList", function(e){
+// Check Local Storage for Reading List and Populate
+var readingList;
+var list = JSON.parse(localStorage.getItem("readingList")) || [];
+
+if (list) {
+    readingList = list
+    
+    for (var k = 0; k < list.length; k++) {
+        listURL = "https://www.googleapis.com/books/v1/volumes/" + list[k]
+        populateReadingList();
+    }
+}
+
+
+// Add a book to the Reading List
+$("#results").on("click", "button.addToList", function(e){
     e.preventDefault();
     
     var id = $(this).parent().parent().parent().attr("id");
     
     listURL = "https://www.googleapis.com/books/v1/volumes/" + id
 
+    populateReadingList();
+
+    readingList.push(id);
+    localStorage.setItem("readingList",(JSON.stringify(readingList)));
+    console.log(readingList);
+
+ });
+
+
+//  Remove Item From Reading List
+$(".readingList").on("click", "button.removeFromList", function (e){
+    e.preventDefault();
+
+    var id = $(this).parent().parent().parent().attr("id")
+
+    var index = readingList.indexOf(id);
+    console.log(index);
+    
+    if (index > -1) {readingList.splice(index,1)};
+    console.log(readingList);
+
+    localStorage.setItem("readingList",(JSON.stringify(readingList)));
+    // localStorage.setItem(JSON.stringify("readingList", readingList));
+
+    $(this).parent().parent().parent().remove();
+
+}); 
+
+
+// Function to Create a Reading List Item in the DOM
+function populateReadingList() {
     $.ajax({
         url : listURL,
         method : "GET"
@@ -147,19 +195,31 @@ $(document).on("click", "button.addToList", function(e){
         var toRead = $("<div>");
         toRead.attr("id", response.id);
 
-        var title = $("<h3>");
+        var row = $("<div>");
+        row.addClass("row list-item");
+
+        var col1 = $("<div>");
+        col1.addClass("col-10");
+
+        var col2 = $("<div>");
+        col2.addClass("col-2");
+
+        var title = $("<p>");
+
+        var removeBtn = $("<button>");
+        removeBtn.text("X");
+        removeBtn.addClass("btn btn-sm btn-secondary removeFromList");
         
         title.text(titleAPI);
-        toRead.append(title);
+
+        toRead.append(row);
+        row.append(col1);
+        col1.append(title);
+
+        row.append(col2);
+        col2.append(removeBtn);
 
         $("#list").append(toRead);
 
-
     });
-
-
- });
-
- 
-
-
+}
