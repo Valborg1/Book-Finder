@@ -4,11 +4,16 @@ var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 // var queryURL = "https://www.googleapis.com/books/v1/volumes?q=+inauthor:smith&key=AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM" + APIKey
 
 
-$("#searchButton").on("click", function(){
+$("#searchButton").on("click", function(e){
+    e.preventDefault();
     $("#results").text("");
 
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
+
+if (!searchTitle && !searchAuthor) {
+    alert("Please enter either a title or author.")
+}
 
 var title;
 var author;
@@ -61,13 +66,13 @@ $.ajax({
     titleRow.addClass("row");
 
         var titleCol = $("<div>");
-        titleCol.addClass("col-9");
+        titleCol.addClass("col-8");
 
             var title = $("<h3>");
             title.text(titleAPI)
     
         var btnCol = $("<div>");
-        btnCol.addClass("col-3");
+        btnCol.addClass("col-4");
 
             var addBtn = $("<button>");
             addBtn.text("Add to Reading List");
@@ -147,7 +152,7 @@ $(document).on("click", "button.addToList", function(e){
         var toRead = $("<div>");
         toRead.attr("id", response.id);
 
-        var title = $("<h3>");
+        var title = $("<p>");
         
         title.text(titleAPI);
         toRead.append(title);

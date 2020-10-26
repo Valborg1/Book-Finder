@@ -3,3 +3,15 @@
     padding: 20px;
     border-radius: 25px;
 }
+
+button.addToList {
+    display: none;
+}
+
+/* div.searchResults:hover + .addToList, button.addToList:hover {
+    display: inline-block;
+} */
+
+.search-results:hover button.addToList {
+   display: block;
+}

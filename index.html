@@ -14,40 +14,50 @@
     <div class="container">
         <div class="jumbotron jumbotron-fluid container-fluid">
             <div class="containerJumbotron">
-                <h1 class="display-4">Fluid jumbotron</h1>
-                <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.
+                <h1 class="display-4 text-center">Create Your Reading List</h1>
+                <p class="lead text-center">Use the Search to find books and add them to your reading list.
                 </p>
             </div>
         </div>
-        <div class="card">
-            <div class="novelSearch">
-                <div class="card-body">
-                    <h1>Search for Novel</h1>
-                    <input type="text" name="" id="byTitle" placeholder="Search By Title">
-                    <br>
-                    <input type="text" name="" id="byAuthor" placeholder="Search By Author">
-                    <br>
-                    <div><button id="searchButton">SEARCH</button></div>
-                </div>
-            </div>
-            <div class="title">
-                <div id="results" class="card-body">
-                    <div>
-                        <div id="learnMore"><button>Learn More</button></div>
-                        <div id="readingList"><button>Add to Reading list</button></div>
-                    </div>
-                </div>
-            </div>
-            <div class="readingList">
-                <div class="card-body">
-                    <h1>My Reading List</h1>
-                    <div id="list">RYour reading list</div>
-                    <div>
-                        <button>Remove From List</button>
-                    </div>
+        <div class="row">
+            <div class="card col-3">
 
+                <!-- The Search Interface -->
+                <form>
+                    <div class="form-group">
+                        <br/>
+                    <h3>Search for Novel</h3>
+                      <!-- <label for="exampleInputEmail1">Email address</label> -->
+                      <input type="text" class="form-control" id="byTitle" aria-describedby="emailHelp" placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                      <!-- <label for="exampleInputPassword1">Password</label> -->
+                      <input type="text" class="form-control" id="byAuthor" placeholder="Author (Optional)">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-lg btn-primary" id="searchButton">Search</button>
+                  </form>
+            
+                <!-- Reading List Appended Here -->
+                <div class="row">
+                    <div class="readingList">
+                        <div class="card-body">
+                            <h3>My Reading List</h3>
+                            <div id="list"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Search Results Appended Here -->
+            <div class="card col-9">
+                <div class="title">
+                    <div id="results" class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+            
         </div>
 
     </div>
