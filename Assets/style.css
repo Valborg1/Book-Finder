@@ -8,10 +8,14 @@ button.addToList {
     display: none;
 }
 
-/* div.searchResults:hover + .addToList, button.addToList:hover {
-    display: inline-block;
-} */
-
 .search-results:hover button.addToList {
+   display: block;
+}
+
+button.removeFromList {
+    display: none;
+}
+
+.list-item:hover button.removeFromList {
    display: block;
 }

@@ -134,13 +134,59 @@ $.ajax({
 
 });
 
-$(document).on("click", "button.addToList", function(e){
+var readingList;
+var list = JSON.parse(localStorage.getItem("readingList")) || [];
+
+if (list) {
+    console.log("there is a list")
+    readingList = list
+    
+    for (var k = 0; k < list.length; k++) {
+        listURL = "https://www.googleapis.com/books/v1/volumes/" + list[k]
+        populateReadingList();
+    }
+}
+
+
+
+$("#results").on("click", "button.addToList", function(e){
     e.preventDefault();
     
     var id = $(this).parent().parent().parent().attr("id");
     
     listURL = "https://www.googleapis.com/books/v1/volumes/" + id
 
+    populateReadingList();
+
+    readingList.push(id);
+    localStorage.setItem("readingList",(JSON.stringify(readingList)));
+    console.log(readingList);
+
+ });
+
+
+//  Remove Item From Reading List
+$(".readingList").on("click", "button.removeFromList", function (e){
+    e.preventDefault();
+
+    var id = $(this).parent().parent().parent().attr("id")
+
+    var index = readingList.indexOf(id);
+    console.log(index);
+    
+    if (index > -1) {readingList.splice(index,1)};
+    console.log(readingList);
+
+    localStorage.setItem("readingList",(JSON.stringify(readingList)));
+    // localStorage.setItem(JSON.stringify("readingList", readingList));
+
+    $(this).parent().parent().parent().remove();
+
+}); 
+
+
+
+function populateReadingList() {
     $.ajax({
         url : listURL,
         method : "GET"
@@ -152,19 +198,31 @@ $(document).on("click", "button.addToList", function(e){
         var toRead = $("<div>");
         toRead.attr("id", response.id);
 
+        var row = $("<div>");
+        row.addClass("row list-item");
+
+        var col1 = $("<div>");
+        col1.addClass("col-10");
+
+        var col2 = $("<div>");
+        col2.addClass("col-2");
+
         var title = $("<p>");
+
+        var removeBtn = $("<button>");
+        removeBtn.text("X");
+        removeBtn.addClass("btn btn-sm btn-secondary removeFromList");
         
         title.text(titleAPI);
-        toRead.append(title);
+
+        toRead.append(row);
+        row.append(col1);
+        col1.append(title);
+
+        row.append(col2);
+        col2.append(removeBtn);
 
         $("#list").append(toRead);
 
-
     });
-
-
- });
-
- 
-
-
+}
