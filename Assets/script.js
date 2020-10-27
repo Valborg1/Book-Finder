@@ -4,6 +4,8 @@ var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 $("#searchButton").on("click", function(e){
     e.preventDefault();
     $("#results").text("");
+    $("#resultsIntro").remove();
+
 
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
@@ -73,7 +75,7 @@ $.ajax({
 
             var addBtn = $("<button>");
             addBtn.text("+Reading List");
-            addBtn.addClass("btn btn-secondary float-right addToList")
+            addBtn.addClass("btn btn-info float-right addToList")
 
     var main = $("<div>");
     main.addClass("main-wapper");
@@ -148,6 +150,7 @@ if (list) {
 // Add a book to the Reading List
 $("#results").on("click", "button.addToList", function(e){
     e.preventDefault();
+    $("#readingListIntro").remove();
     
     var id = $(this).parent().parent().parent().attr("id");
     
@@ -167,23 +170,21 @@ $(".readingList").on("click", "button.removeFromList", function (e){
     e.preventDefault();
 
     var id = $(this).parent().parent().parent().attr("id")
-
     var index = readingList.indexOf(id);
-    console.log(index);
     
     if (index > -1) {readingList.splice(index,1)};
-    console.log(readingList);
 
     localStorage.setItem("readingList",(JSON.stringify(readingList)));
-    // localStorage.setItem(JSON.stringify("readingList", readingList));
 
     $(this).parent().parent().parent().remove();
-
 }); 
 
 
 // Function to Create a Reading List Item in the DOM
 function populateReadingList() {
+    console.log(listURL)
+
+
     $.ajax({
         url : listURL,
         method : "GET"
@@ -208,7 +209,7 @@ function populateReadingList() {
 
         var removeBtn = $("<button>");
         removeBtn.text("X");
-        removeBtn.addClass("btn btn-sm btn-secondary removeFromList");
+        removeBtn.addClass("btn btn-sm btn-warning removeFromList");
         
         title.text(titleAPI);
 

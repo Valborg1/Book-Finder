@@ -1,7 +1,20 @@
+body {
+    background-image: url(books.jpg) ;
+    background-size: cover;
+}
+
+div.jumbotron {
+    border-radius: 10px;
+}
+
 .search-results {
     margin-bottom: 20px;
     padding: 20px;
     border-radius: 25px;
+}
+
+.list-item {
+    display: block;
 }
 
 button.addToList, button.removeFromList {
@@ -11,3 +24,16 @@ button.addToList, button.removeFromList {
 .search-results:hover button.addToList, .list-item:hover button.removeFromList {
    display: block;
 }
+
+.card {
+    margin: 20px;
+}
+
+#test {
+    opacity: 0.5;
+    background-color: red;
+  }
+
+  #main-card {
+      height: 90%;
+  }
