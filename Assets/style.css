@@ -29,11 +29,6 @@ button.addToList, button.removeFromList {
     margin: 20px;
 }
 
-#test {
-    opacity: 0.5;
-    background-color: red;
-  }
-
-  #main-card {
-      height: 90%;
+#main-card, #allResults {
+      height: 50%;
   }
