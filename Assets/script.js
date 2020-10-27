@@ -200,10 +200,10 @@ function populateReadingList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-10");
+        col1.addClass("col-lg-10");
 
         var col2 = $("<div>");
-        col2.addClass("col-2");
+        col2.addClass("col-lg-2");
 
         var title = $("<p>");
 
