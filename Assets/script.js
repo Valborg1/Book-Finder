@@ -408,5 +408,5 @@ setYear();
 
 
 // Tool Tips
-$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+// $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
