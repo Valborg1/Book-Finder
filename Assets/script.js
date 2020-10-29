@@ -48,7 +48,6 @@ $.ajax({
     var titleAPI = results.title;
 
     var authorAPI = results.authors;
-
     if (!authorAPI) {
         authorAPI = "Not Listed";
     } else {
@@ -59,9 +58,15 @@ $.ajax({
     var trimPubDateAPI = publishedDateAPI.substring(0,4);
 
     var descriptionAPI = results.description;
+    if (!descriptionAPI) {
+        descriptionAPI = "No description."
+    }
     var trimDescAPI = descriptionAPI.split(" ").splice(0,35).join(" ");
 
     var imgAPI = results.imageLinks.thumbnail;
+    if (!imgAPI) {
+        imgAPI = "";
+    } 
 
 
     // Create Elements for Results
@@ -106,7 +111,12 @@ $.ajax({
             var publishedDate = $("<p>");
             publishedDate.text("Published: " + trimPubDateAPI);
             var description = $("<p>");
-            description.text(trimDescAPI + "...");
+
+            if (descriptionAPI === "No description.") {
+                description.text(trimDescAPI);
+            } else {
+                description.text(trimDescAPI + "...");
+            }
 
     // DYNAMICALLY CREATE RESULT
     
