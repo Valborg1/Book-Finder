@@ -49,15 +49,23 @@
                         <label for="number">Author</label>
                         <input type="text" class="form-control" id="byAuthor" placeholder="(Optional)">
                     </div>
-                    <div class="form-group">
-                        <label for="number"># of Books to Return:</label>
-                        <select name="select-number" class="form-control" id="select-number">
-                          <option value="3">3</option>
-                          <option value="5">5</option>
-                          <option value="10">10</option>
-                        </select>
-                      </div>
-                    <button type="submit" class="btn btn-lg btn-primary" id="searchButton">Search</button>
+                    <div class="pad-right row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="number"># of Books to Return:</label>
+                                <select name="select-number" class="form-control" id="select-number">
+                                <option value="3">3</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pad-top col-3">
+                            <button type="submit" class="align-bottom btn btn-lg btn-primary" id="searchButton">Search</button>
+                        </div>
+
+                    </div>
+
                   </form>
             
                 <!-- Reading List Appended Here -->

@@ -262,6 +262,14 @@ $(".readingList").on("click", "button.removeFromList", function (e){
 $(".completedList").on("click", "button.removeFromComplete", function (e){
     e.preventDefault();
 
+    var title = $(this).parent().siblings(".data-info").children().text();
+
+    console.log(title);
+    var check = confirm("Are you sure you want to delete \"" + title + "\" from your completed books?")
+    if (check === false) {
+        return;
+    }
+
     var id = $(this).parent().parent().parent().attr("id")
 
     var index = completedList.findIndex(x => x.id === id);
@@ -367,7 +375,7 @@ function populateCompletedList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-lg-5 col-md-6");
+        col1.addClass("data-info col-lg-5 col-md-6");
 
         var col2 = $("<div>");
         col2.addClass("col-lg-5 col-md-5");

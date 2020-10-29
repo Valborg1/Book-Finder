@@ -18,6 +18,14 @@ div.jumbotron {
     min-height: 44px;
 }
 
+.pad-top {
+    padding-top: 20px;
+}
+
+.pad-right {
+    padding-right: 20px;
+}
+
 button.addToList, button.removeFromList, button.addToComplete {
     display: none;
 }
