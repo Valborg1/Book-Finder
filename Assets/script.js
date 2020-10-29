@@ -8,6 +8,8 @@ $("#searchButton").on("click", function(e){
     $("#results").text("");
     $("#resultsIntro").remove();
 
+var numberOfResults = $("#select-number").val();
+
 
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
@@ -40,7 +42,7 @@ $.ajax({
     console.log(response);
 
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < numberOfResults; i++) {
 
     // Query all Result Information
     var results = response.items[i].volumeInfo;
@@ -55,7 +57,13 @@ $.ajax({
     }
 
     var publishedDateAPI = results.publishedDate;
-    var trimPubDateAPI = publishedDateAPI.substring(0,4);
+    if (!publishedDateAPI) {
+        publishedDateAPI = "Not Listed";
+    } else {
+        publishedDateAPI = publishedDateAPI.substring(0,4);
+    }
+
+    // var trimPubDateAPI = publishedDateAPI.substring(0,4);
 
     var descriptionAPI = results.description;
     if (!descriptionAPI) {
@@ -111,7 +119,7 @@ $.ajax({
             var author = $("<p>");
             author.text("Author: " + authorAPI);
             var publishedDate = $("<p>");
-            publishedDate.text("Published: " + trimPubDateAPI);
+            publishedDate.text("Published: " + publishedDateAPI);
             var description = $("<p>");
 
             if (descriptionAPI === "No description.") {
@@ -425,6 +433,6 @@ function setYear() {
 setYear();
 
 
-// Tool Tips
+// Tool Tips Option
 // $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });

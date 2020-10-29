@@ -40,14 +40,23 @@
                 <!-- The Search Interface -->
                   <form>
                     <div class="form-group">
-                    <br/>
-                    <h3>Search for Novel</h3>
-                    <input type="text" class="form-control" id="byTitle" aria-describedby="emailHelp" placeholder="Title">
+                        <br/>
+                        <h3>Search for Novel</h3>
+                        <label for="number">Title</label>
+                        <input type="text" class="form-control" id="byTitle" placeholder="">
                     </div>
                     <div class="form-group">
-                    <input type="text" class="form-control" id="byAuthor" placeholder="Author (Optional)">
+                        <label for="number">Author</label>
+                        <input type="text" class="form-control" id="byAuthor" placeholder="(Optional)">
                     </div>
-                    
+                    <div class="form-group">
+                        <label for="number"># of Books to Return:</label>
+                        <select name="select-number" class="form-control" id="select-number">
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
                     <button type="submit" class="btn btn-lg btn-primary" id="searchButton">Search</button>
                   </form>
             
