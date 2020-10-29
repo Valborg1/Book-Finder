@@ -41,3 +41,7 @@ button.removeFromComplete {
 .list-item:hover button.removeFromComplete {
    display: block;
 }
+
+.booksReadCount {
+    padding: 50px;
+}
