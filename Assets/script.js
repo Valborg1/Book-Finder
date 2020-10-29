@@ -208,7 +208,7 @@ function populateReadingList() {
         var col3 = $("<div>");
         col3.addClass("col-2");
 
-        var title = $("<p>");
+        var title = $("<a>");
 
         var completeBtn = $("<button>");
         completeBtn.addClass("btn btn-sm btn-success fa fa-check addToComplete")
@@ -217,6 +217,8 @@ function populateReadingList() {
         removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromList");
         
         title.text(titleAPI);
+        title.attr("href", response.volumeInfo.infoLink)
+        title.attr("target", "_blank")
 
         toRead.append(row);
         row.append(col1);
