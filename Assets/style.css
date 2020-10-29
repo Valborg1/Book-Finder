@@ -17,11 +17,11 @@ div.jumbotron {
     display: block;
 }
 
-button.addToList, button.removeFromList {
+button.addToList, button.removeFromList, button.addToComplete {
     display: none;
 }
 
-.search-results:hover button.addToList, .list-item:hover button.removeFromList {
+.search-results:hover button.addToList, .list-item:hover button.removeFromList, .list-item:hover button.addToComplete {
    display: block;
 }
 
@@ -31,4 +31,4 @@ button.addToList, button.removeFromList {
 
 #main-card, #allResults {
       height: 50%;
-  }
+}

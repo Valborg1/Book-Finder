@@ -200,16 +200,21 @@ function populateReadingList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-10");
+        col1.addClass("col-8");
 
         var col2 = $("<div>");
         col2.addClass("col-2");
 
+        var col3 = $("<div>");
+        col3.addClass("col-2");
+
         var title = $("<p>");
 
+        var completeBtn = $("<button>");
+        completeBtn.addClass("btn btn-sm btn-success fa fa-check addToComplete")
+
         var removeBtn = $("<button>");
-        removeBtn.text("X");
-        removeBtn.addClass("btn btn-sm btn-warning removeFromList");
+        removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromList");
         
         title.text(titleAPI);
 
@@ -218,7 +223,10 @@ function populateReadingList() {
         col1.append(title);
 
         row.append(col2);
-        col2.append(removeBtn);
+        col2.append(completeBtn);
+
+        row.append(col3);
+        col3.append(removeBtn);
 
         $("#list").append(toRead);
 
