@@ -31,7 +31,7 @@ if (searchAuthor !== "") {
         author = "";
     }
 
-var queryURL = "https://www.googleapis.com/books/v1/volumes?q=" + title + author + "&key=" + APIKey
+var queryURL = "https://www.googleapis.com/books/v1/volumes?q=" + title + author + "&orderBy=relevance&key=" + APIKey
 
 $.ajax({
     url : queryURL,
@@ -63,10 +63,12 @@ $.ajax({
     }
     var trimDescAPI = descriptionAPI.split(" ").splice(0,35).join(" ");
 
-    var imgAPI = results.imageLinks.thumbnail;
+    var imgAPI = results.imageLinks;
     if (!imgAPI) {
-        imgAPI = "";
-    } 
+        imgAPI = ""
+    } else {
+        imgAPI = results.imageLinks.thumbnail
+    }
 
 
     // Create Elements for Results
