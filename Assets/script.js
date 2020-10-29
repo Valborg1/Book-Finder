@@ -47,7 +47,13 @@ $.ajax({
 
     var titleAPI = results.title;
 
-    var authorAPI = results.authors[0];
+    var authorAPI = results.authors;
+
+    if (!authorAPI) {
+        authorAPI = "Not Listed";
+    } else {
+        authorAPI = results.authors[0];
+    }
 
     var publishedDateAPI = results.publishedDate;
     var trimPubDateAPI = publishedDateAPI.substring(0,4);
@@ -276,13 +282,13 @@ function populateReadingList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-lg-8 col-md-10");
+        col1.addClass("pad col-lg-8 col-md-10");
 
         var col2 = $("<div>");
-        col2.addClass("col-lg-2 col-md-1");
+        col2.addClass("pad col-lg-2 col-md-1");
 
         var col3 = $("<div>");
-        col3.addClass("col-lg-2 col-md-1");
+        col3.addClass("pad col-lg-2 col-md-1");
 
         var title = $("<a>");
 
