@@ -10,7 +10,6 @@ $("#searchButton").on("click", function(e){
 
 var numberOfResults = $("#select-number").val();
 
-
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
 
