@@ -164,6 +164,35 @@ $("#results").on("click", "button.addToList", function(e){
 
  });
 
+// Check Local Storage for Completed List and Populate
+var completedList;
+var cList = JSON.parse(localStorage.getItem("completedList")) || [];
+
+if (cList) {
+    completedList = cList
+    
+    for (var l = 0; l < cList.length; l++) {
+        listURL = "https://www.googleapis.com/books/v1/volumes/" + cList[l]
+        populateCompletedList();
+    }
+}
+
+//  Add Item to Completed List and Remove from Reading List
+$(".readingList").on("click", "button.addToComplete", function (e){
+    e.preventDefault();
+
+    var id = $(this).parent().parent().parent().attr("id")
+
+    completedList.push(id);
+    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+
+    var index = readingList.indexOf(id);
+    if (index > -1) {readingList.splice(index,1)};
+    localStorage.setItem("readingList",(JSON.stringify(readingList)));
+
+    $(this).parent().parent().parent().remove();
+}); 
+
 
 //  Remove Item From Reading List
 $(".readingList").on("click", "button.removeFromList", function (e){
@@ -183,7 +212,6 @@ $(".readingList").on("click", "button.removeFromList", function (e){
 // Function to Create a Reading List Item in the DOM
 function populateReadingList() {
     console.log(listURL)
-
 
     $.ajax({
         url : listURL,
@@ -231,6 +259,50 @@ function populateReadingList() {
         col3.append(removeBtn);
 
         $("#list").append(toRead);
+
+    });
+}
+
+function populateCompletedList() {
+    console.log(listURL)
+
+    $.ajax({
+        url : listURL,
+        method : "GET"
+    }).then(function(response){
+        console.log(response);
+
+        var titleAPI = response.volumeInfo.title;
+
+        var read = $("<div>");
+        read.attr("id", response.id);
+
+        var row = $("<div>");
+        row.addClass("row list-item");
+
+        var col1 = $("<div>");
+        col1.addClass("col-8");
+
+        var col2 = $("<div>");
+        col2.addClass("col-2");
+
+        var title = $("<a>");
+
+        var removeBtn = $("<button>");
+        removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromComplete");
+        
+        title.text(titleAPI);
+        title.attr("href", response.volumeInfo.infoLink)
+        title.attr("target", "_blank")
+
+        read.append(row);
+        row.append(col1);
+        col1.append(title);
+
+        row.append(col2);
+        col2.append(removeBtn);
+        
+        $("#cList").append(read);
 
     });
 }

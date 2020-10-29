@@ -32,3 +32,12 @@ button.addToList, button.removeFromList, button.addToComplete {
 #main-card, #allResults {
       height: 50%;
 }
+
+/* Completed Books */
+button.removeFromComplete {
+    display: none;
+}
+
+.list-item:hover button.removeFromComplete {
+   display: block;
+}
