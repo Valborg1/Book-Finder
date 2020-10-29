@@ -1,3 +1,5 @@
+$( document ).ready(function() {
+
 var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 
 // Main Search Functionality
@@ -172,7 +174,8 @@ if (cList) {
     completedList = cList
     
     for (var l = 0; l < cList.length; l++) {
-        listURL = "https://www.googleapis.com/books/v1/volumes/" + cList[l]
+        listURL = "https://www.googleapis.com/books/v1/volumes/" + cList[l].id
+
         populateCompletedList();
     }
 }
@@ -193,8 +196,15 @@ $(".readingList").on("click", "button.addToComplete", function (e){
     e.preventDefault();
 
     var id = $(this).parent().parent().parent().attr("id")
+    var timeStamp = moment().format('MMMM Do');
 
-    completedList.push(id);
+    var bookInfo = {
+        "id" : id,
+        "timeStamp" : timeStamp
+    };
+
+    completedList.push(bookInfo);
+
     localStorage.setItem("completedList",(JSON.stringify(completedList)));
 
     var index = readingList.indexOf(id);
@@ -227,7 +237,9 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
     e.preventDefault();
 
     var id = $(this).parent().parent().parent().attr("id")
-    var index = completedList.indexOf(id);
+
+    var index = completedList.findIndex(x => x.id === id);
+    console.log("index", index)
     
     if (index > -1) {completedList.splice(index,1)};
 
@@ -235,7 +247,11 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
 
     booksThisYear--;
     localStorage.setItem("readThisYear", booksThisYear);
+
+    currentYear = moment().format("YYYY");
+    
     $("h3 span").text(booksThisYear)
+    $("#booksReadTitle").text("Books Read During " + currentYear + " ");
 
     $(this).parent().parent().parent().remove();
 }); 
@@ -254,27 +270,36 @@ function populateReadingList() {
 
         var toRead = $("<div>");
         toRead.attr("id", response.id);
+        // toRead.addClass("toRead bg-light");
 
         var row = $("<div>");
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-8");
+        col1.addClass("col-lg-8 col-md-10");
 
         var col2 = $("<div>");
-        col2.addClass("col-2");
+        col2.addClass("col-lg-2 col-md-1");
 
         var col3 = $("<div>");
-        col3.addClass("col-2");
+        col3.addClass("col-lg-2 col-md-1");
 
         var title = $("<a>");
 
+        var hr = $("<hr/>");
+
         var completeBtn = $("<button>");
         completeBtn.addClass("btn btn-sm btn-success fa fa-check addToComplete")
+        completeBtn.attr("data-toggle", "tooltip");
+        completeBtn.attr("data-placement", "top");
+        completeBtn.attr("title", "Mark as Complete");
 
         var removeBtn = $("<button>");
         removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromList");
-        
+        removeBtn.attr("data-toggle", "tooltip");
+        removeBtn.attr("data-placement", "top");
+        removeBtn.attr("title", "Remove from List");
+
         title.text(titleAPI);
         title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
@@ -289,13 +314,17 @@ function populateReadingList() {
         row.append(col3);
         col3.append(removeBtn);
 
+        toRead.append(hr);
+
         $("#list").append(toRead);
 
     });
 }
 
 function populateCompletedList() {
-    console.log(listURL)
+    // console.log(listURL);
+    time = cList[l].timeStamp;
+    console.log("time", time)
 
     $.ajax({
         url : listURL,
@@ -312,16 +341,31 @@ function populateCompletedList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-8");
+        col1.addClass("col-lg-5 col-md-6");
 
         var col2 = $("<div>");
-        col2.addClass("col-2");
+        col2.addClass("col-lg-5 col-md-5");
+
+        var col3 = $("<div>");
+        col3.addClass("col-lg-2 col-md-1");
 
         var title = $("<a>");
 
+        var hr = $("<hr/>");
+
+        var completedDate = $("<p>");
+        completedDate.text(time);
+        completedDate.addClass("text-center")
+        completedDate.attr("data-toggle", "tooltip");
+        completedDate.attr("data-placement", "top");
+        completedDate.attr("title", "Completed Date");
+
         var removeBtn = $("<button>");
         removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromComplete");
-        
+        removeBtn.attr("data-toggle", "tooltip");
+        removeBtn.attr("data-placement", "top");
+        removeBtn.attr("title", "Remove from List");
+
         title.text(titleAPI);
         title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
@@ -331,7 +375,12 @@ function populateCompletedList() {
         col1.append(title);
 
         row.append(col2);
-        col2.append(removeBtn);
+        col2.append(completedDate);
+
+        row.append(col3);
+        col3.append(removeBtn);
+
+        read.append(hr);
         
         $("#cList").append(read);
 
@@ -356,3 +405,8 @@ function setYear() {
 };
 
 setYear();
+
+
+// Tool Tips
+$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
