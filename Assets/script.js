@@ -1,3 +1,5 @@
+$( document ).ready(function() {
+
 var APIKey = "AIzaSyBhUO9Jc-Moam44mTvSABj2O4Jl6sulBWM";
 
 // Main Search Functionality
@@ -235,7 +237,11 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
 
     booksThisYear--;
     localStorage.setItem("readThisYear", booksThisYear);
+
+    currentYear = moment().format("YYYY");
+    
     $("h3 span").text(booksThisYear)
+    $("#booksReadTitle").text("Books Read During " + currentYear + " ");
 
     $(this).parent().parent().parent().remove();
 }); 
@@ -271,10 +277,16 @@ function populateReadingList() {
 
         var completeBtn = $("<button>");
         completeBtn.addClass("btn btn-sm btn-success fa fa-check addToComplete")
+        completeBtn.attr("data-toggle", "tooltip");
+        completeBtn.attr("data-placement", "top");
+        completeBtn.attr("title", "Mark as Complete");
 
         var removeBtn = $("<button>");
         removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromList");
-        
+        removeBtn.attr("data-toggle", "tooltip");
+        removeBtn.attr("data-placement", "top");
+        removeBtn.attr("title", "Remove from List");
+
         title.text(titleAPI);
         title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
@@ -321,7 +333,10 @@ function populateCompletedList() {
 
         var removeBtn = $("<button>");
         removeBtn.addClass("btn btn-sm btn-warning fa fa-times removeFromComplete");
-        
+        removeBtn.attr("data-toggle", "tooltip");
+        removeBtn.attr("data-placement", "top");
+        removeBtn.attr("title", "Remove from List");
+
         title.text(titleAPI);
         title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
@@ -356,3 +371,8 @@ function setYear() {
 };
 
 setYear();
+
+
+// Tool Tips
+$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
