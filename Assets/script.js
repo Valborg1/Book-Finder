@@ -8,6 +8,7 @@ $("#searchButton").on("click", function(e){
     $("#results").text("");
     $("#resultsIntro").remove();
 
+var numberOfResults = $("#select-number").val();
 
 var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
@@ -31,7 +32,7 @@ if (searchAuthor !== "") {
         author = "";
     }
 
-var queryURL = "https://www.googleapis.com/books/v1/volumes?q=" + title + author + "&key=" + APIKey
+var queryURL = "https://www.googleapis.com/books/v1/volumes?q=" + title + author + "&orderBy=relevance&key=" + APIKey
 
 $.ajax({
     url : queryURL,
@@ -40,22 +41,41 @@ $.ajax({
     console.log(response);
 
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < numberOfResults; i++) {
 
     // Query all Result Information
     var results = response.items[i].volumeInfo;
 
     var titleAPI = results.title;
 
-    var authorAPI = results.authors[0];
+    var authorAPI = results.authors;
+    if (!authorAPI) {
+        authorAPI = "Not Listed";
+    } else {
+        authorAPI = results.authors[0];
+    }
 
     var publishedDateAPI = results.publishedDate;
-    var trimPubDateAPI = publishedDateAPI.substring(0,4);
+    if (!publishedDateAPI) {
+        publishedDateAPI = "Not Listed";
+    } else {
+        publishedDateAPI = publishedDateAPI.substring(0,4);
+    }
+
+    // var trimPubDateAPI = publishedDateAPI.substring(0,4);
 
     var descriptionAPI = results.description;
+    if (!descriptionAPI) {
+        descriptionAPI = "No description."
+    }
     var trimDescAPI = descriptionAPI.split(" ").splice(0,35).join(" ");
 
-    var imgAPI = results.imageLinks.thumbnail;
+    var imgAPI = results.imageLinks;
+    if (!imgAPI) {
+        imgAPI = ""
+    } else {
+        imgAPI = results.imageLinks.thumbnail
+    }
 
 
     // Create Elements for Results
@@ -98,9 +118,14 @@ $.ajax({
             var author = $("<p>");
             author.text("Author: " + authorAPI);
             var publishedDate = $("<p>");
-            publishedDate.text("Published: " + trimPubDateAPI);
+            publishedDate.text("Published: " + publishedDateAPI);
             var description = $("<p>");
-            description.text(trimDescAPI + "...");
+
+            if (descriptionAPI === "No description.") {
+                description.text(trimDescAPI);
+            } else {
+                description.text(trimDescAPI + "...");
+            }
 
     // DYNAMICALLY CREATE RESULT
     
@@ -236,6 +261,14 @@ $(".readingList").on("click", "button.removeFromList", function (e){
 $(".completedList").on("click", "button.removeFromComplete", function (e){
     e.preventDefault();
 
+    var title = $(this).parent().siblings(".data-info").children().text();
+
+    console.log(title);
+    var check = confirm("Are you sure you want to delete \"" + title + "\" from your completed books?")
+    if (check === false) {
+        return;
+    }
+
     var id = $(this).parent().parent().parent().attr("id")
 
     var index = completedList.findIndex(x => x.id === id);
@@ -276,13 +309,13 @@ function populateReadingList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-lg-8 col-md-10");
+        col1.addClass("pad col-lg-8 col-md-10");
 
         var col2 = $("<div>");
-        col2.addClass("col-lg-2 col-md-1");
+        col2.addClass("pad col-lg-2 col-md-1");
 
         var col3 = $("<div>");
-        col3.addClass("col-lg-2 col-md-1");
+        col3.addClass("pad col-lg-2 col-md-1");
 
         var title = $("<a>");
 
@@ -341,7 +374,7 @@ function populateCompletedList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("col-lg-5 col-md-6");
+        col1.addClass("data-info col-lg-5 col-md-6");
 
         var col2 = $("<div>");
         col2.addClass("col-lg-5 col-md-5");
@@ -407,6 +440,6 @@ function setYear() {
 setYear();
 
 
-// Tool Tips
+// Tool Tips Option
 // $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
