@@ -208,6 +208,19 @@ $(".readingList").on("click", "button.removeFromList", function (e){
     $(this).parent().parent().parent().remove();
 }); 
 
+//  Remove Item From Completed List
+$(".completedList").on("click", "button.removeFromComplete", function (e){
+    e.preventDefault();
+
+    var id = $(this).parent().parent().parent().attr("id")
+    var index = completedList.indexOf(id);
+    
+    if (index > -1) {completedList.splice(index,1)};
+
+    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+
+    $(this).parent().parent().parent().remove();
+}); 
 
 // Function to Create a Reading List Item in the DOM
 function populateReadingList() {
