@@ -177,6 +177,17 @@ if (cList) {
     }
 }
 
+var booksThisYear = 0;
+var numberRead = localStorage.getItem("readThisYear");
+
+if (numberRead) {
+    booksThisYear = numberRead
+
+    $("h3 span").text(booksThisYear);
+} else {
+    $("h3 span").text(booksThisYear)
+}
+
 //  Add Item to Completed List and Remove from Reading List
 $(".readingList").on("click", "button.addToComplete", function (e){
     e.preventDefault();
@@ -189,6 +200,9 @@ $(".readingList").on("click", "button.addToComplete", function (e){
     var index = readingList.indexOf(id);
     if (index > -1) {readingList.splice(index,1)};
     localStorage.setItem("readingList",(JSON.stringify(readingList)));
+
+    booksThisYear++;
+    localStorage.setItem("readThisYear", booksThisYear);
 
     $(this).parent().parent().parent().remove();
 }); 
@@ -218,6 +232,10 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
     if (index > -1) {completedList.splice(index,1)};
 
     localStorage.setItem("completedList",(JSON.stringify(completedList)));
+
+    booksThisYear--;
+    localStorage.setItem("readThisYear", booksThisYear);
+    $("h3 span").text(booksThisYear)
 
     $(this).parent().parent().parent().remove();
 }); 
@@ -319,3 +337,22 @@ function populateCompletedList() {
 
     });
 }
+
+// Maintain Counter + Local Storage for Calendar Year
+var currentYear;
+
+function setYear() {
+    var dateCheck = localStorage.getItem("currentYear");
+    currentYear = moment().format("YYYY");
+
+    $("#booksReadTitle").text("Books Read During " + currentYear + " ");
+
+    if (dateCheck === "" || dateCheck === currentYear) {
+        localStorage.setItem("currentYear", currentYear);
+    } else {
+        localStorage.clear();
+        localStorage.setItem("currentYear", currentYear);
+    };
+};
+
+setYear();
