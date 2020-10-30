@@ -52,6 +52,9 @@ button.learnMore, button.addToList {
 }
 
 
+/* Modal */
+
+
 /* Completed Books */
 button.removeFromComplete {
     display: none;
