@@ -325,11 +325,11 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
     // if (check === false) {
     //     return;
     // }
+    console.log("parent", $(this).parent().parent().parent());
 
     var id = $(this).parent().parent().parent().attr("id")
 
     var index = completedListSorted.findIndex(x => x.id === id);
-    console.log("index", index)
     
     if (index > -1) {completedListSorted.splice(index,1)};
 
