@@ -192,18 +192,45 @@ $("#results").on("click", "button.addToList", function(e){
  });
 
 // Check Local Storage for Completed List and Populate
-var completedList;
+var completedListSorted;
+
 var cList = JSON.parse(localStorage.getItem("completedList")) || [];
+console.log("unsorted", cList);
+
 
 if (cList) {
-    completedList = cList
-    
-    for (var l = 0; l < cList.length; l++) {
-        listURL = "https://www.googleapis.com/books/v1/volumes/" + cList[l].id
 
-        populateCompletedList();
-    }
+    prepCompletedList();
+    
 }
+
+// Sort Completed 
+function prepCompletedList() {
+
+completedListSorted = cList.sort((a, b) => (a.timeStamp > b.timeStamp) ? 1 : -1)
+
+populateCompletedList();
+
+for (var j = 0; j < completedListSorted.length; j++) {
+
+    listURL = "https://www.googleapis.com/books/v1/volumes/" + completedListSorted[j].id
+
+    $.ajax({
+        url : listURL,
+        method : "GET",  
+    }).then(function(response){
+        console.log(response);
+
+        var href = response.volumeInfo.infoLink;
+        var id = response.id;
+
+        $("#"+id).children().children().children().attr("href", href);
+
+    });
+
+  };
+
+};
 
 var booksThisYear = 0;
 var numberRead = localStorage.getItem("readThisYear");
@@ -221,16 +248,20 @@ $(".readingList").on("click", "button.addToComplete", function (e){
     e.preventDefault();
 
     var id = $(this).parent().parent().parent().attr("id")
-    var timeStamp = moment().format('MMMM Do');
+    var title = $(this).parent().parent().parent().attr("data-title")
+    var monthDay = moment().format('MMMM Do');
+    var timeStamp = moment().format();  
 
     var bookInfo = {
         "id" : id,
+        "title" : title,
+        "monthDay" : monthDay,
         "timeStamp" : timeStamp
     };
 
-    completedList.push(bookInfo);
+    completedListSorted.push(bookInfo);
 
-    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+    localStorage.setItem("completedList",(JSON.stringify(completedListSorted)));
 
     var index = readingList.indexOf(id);
     if (index > -1) {readingList.splice(index,1)};
@@ -271,12 +302,12 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
 
     var id = $(this).parent().parent().parent().attr("id")
 
-    var index = completedList.findIndex(x => x.id === id);
+    var index = completedListSorted.findIndex(x => x.id === id);
     console.log("index", index)
     
-    if (index > -1) {completedList.splice(index,1)};
+    if (index > -1) {completedListSorted.splice(index,1)};
 
-    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+    localStorage.setItem("completedList",(JSON.stringify(completedListSorted)));
 
     booksThisYear--;
     localStorage.setItem("readThisYear", booksThisYear);
@@ -295,7 +326,7 @@ function populateReadingList() {
 
     $.ajax({
         url : listURL,
-        method : "GET"
+        method : "GET",  
     }).then(function(response){
         console.log(response);
 
@@ -303,7 +334,7 @@ function populateReadingList() {
 
         var toRead = $("<div>");
         toRead.attr("id", response.id);
-        // toRead.addClass("toRead bg-light");
+        toRead.attr("data-title", titleAPI)
 
         var row = $("<div>");
         row.addClass("row list-item");
@@ -355,20 +386,15 @@ function populateReadingList() {
 }
 
 function populateCompletedList() {
-    // console.log(listURL);
-    time = cList[l].timeStamp;
-    console.log("time", time)
 
-    $.ajax({
-        url : listURL,
-        method : "GET"
-    }).then(function(response){
-        console.log(response);
+    for (var i = 0; i < completedListSorted.length;i++) {
 
-        var titleAPI = response.volumeInfo.title;
+        var id = completedListSorted[i].id;
+        var titleAPI = completedListSorted[i].title;
+        var time = completedListSorted[i].monthDay;
 
         var read = $("<div>");
-        read.attr("id", response.id);
+        read.attr("id", id);
 
         var row = $("<div>");
         row.addClass("row list-item");
@@ -400,7 +426,6 @@ function populateCompletedList() {
         removeBtn.attr("title", "Remove from List");
 
         title.text(titleAPI);
-        title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
 
         read.append(row);
@@ -417,7 +442,7 @@ function populateCompletedList() {
         
         $("#cList").append(read);
 
-    });
+    };
 }
 
 // Maintain Counter + Local Storage for Calendar Year
