@@ -40,7 +40,6 @@ $.ajax({
 }).then(function(response){
     console.log(response);
 
-
     for (var i = 0; i < numberOfResults; i++) {
 
     // Query all Result Information
@@ -62,8 +61,6 @@ $.ajax({
         publishedDateAPI = publishedDateAPI.substring(0,4);
     }
 
-    // var trimPubDateAPI = publishedDateAPI.substring(0,4);
-
     var descriptionAPI = results.description;
     if (!descriptionAPI) {
         descriptionAPI = "No description."
@@ -77,6 +74,7 @@ $.ajax({
         imgAPI = results.imageLinks.thumbnail
     }
 
+    var learnMore = results.infoLink;
 
     // Create Elements for Results
     var bookResult = $("<div>");
@@ -84,7 +82,7 @@ $.ajax({
     bookResult.attr("id", response.items[i].id)
     
     var titleRow = $("<div>");
-    titleRow.addClass("row");
+    titleRow.addClass("row titleRow");
 
         var titleCol = $("<div>");
         titleCol.addClass("col-8");
@@ -98,6 +96,12 @@ $.ajax({
             var addBtn = $("<button>");
             addBtn.text("+Reading List");
             addBtn.addClass("btn btn-info float-right addToList")
+
+            var learnBtn = $("<button>");
+            learnBtn.text("Learn More");
+            learnBtn.addClass("btn btn-secondary float-right learnMore")
+            learnBtn.attr("type", "button");
+            learnBtn.attr("onclick", "window.open("+"\""+learnMore+"\""+")");
 
     var main = $("<div>");
     main.addClass("main-wapper");
@@ -136,6 +140,7 @@ $.ajax({
     titleRow.append(titleCol);
    
     btnCol.append(addBtn);
+    btnCol.append(learnBtn); 
     titleRow.append(btnCol);
 
     // Create a Row for Two Columns and All Info
@@ -191,6 +196,24 @@ $("#results").on("click", "button.addToList", function(e){
 
  });
 
+// Get More Info on Book in Results
+// $("#results").on("click", "button.learnMore", function(e){
+//     e.preventDefault();
+
+//     var link = $(this).attr("onclick");
+
+
+//     var id = $(this).parent().parent().parent().attr("id");
+    
+//     listURL = "https://www.googleapis.com/books/v1/volumes/" + id 
+
+    
+
+
+
+
+// }) 
+
 // Check Local Storage for Completed List and Populate
 var completedListSorted;
 
@@ -238,9 +261,9 @@ var numberRead = localStorage.getItem("readThisYear");
 if (numberRead) {
     booksThisYear = numberRead
 
-    $("h3 span").text(booksThisYear);
+    $("h4 span").text(booksThisYear);
 } else {
-    $("h3 span").text(booksThisYear)
+    $("h4 span").text(booksThisYear)
 }
 
 //  Add Item to Completed List and Remove from Reading List
@@ -340,13 +363,13 @@ function populateReadingList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("pad col-lg-8 col-md-10");
+        col1.addClass("pad col-lg-8 col-md-10 col-sm-10 col-10");
 
         var col2 = $("<div>");
-        col2.addClass("pad col-lg-2 col-md-1");
+        col2.addClass("pad col-lg-2 col-md-1 col-sm-1 col-1");
 
         var col3 = $("<div>");
-        col3.addClass("pad col-lg-2 col-md-1");
+        col3.addClass("pad col-lg-2 col-md-1 col-sm-1 col-1");
 
         var title = $("<a>");
 
@@ -400,13 +423,13 @@ function populateCompletedList() {
         row.addClass("row list-item");
 
         var col1 = $("<div>");
-        col1.addClass("data-info col-lg-5 col-md-6");
+        col1.addClass("data-info col-lg-5 col-md-5 col-sm-5 col-5");
 
         var col2 = $("<div>");
-        col2.addClass("col-lg-5 col-md-5");
+        col2.addClass("col-lg-5 col-md-5 col-sm-5 col-5");
 
         var col3 = $("<div>");
-        col3.addClass("col-lg-2 col-md-1");
+        col3.addClass("col-lg-2 col-md-2 col-sm-2 col-2");
 
         var title = $("<a>");
 

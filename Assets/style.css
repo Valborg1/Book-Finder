@@ -26,12 +26,21 @@ div.jumbotron {
     padding-right: 20px;
 }
 
-button.addToList, button.removeFromList, button.addToComplete {
+button.addToList, button.removeFromList, button.addToComplete, button.learnMore {
     display: none;
 }
 
-.search-results:hover button.addToList, .list-item:hover button.removeFromList, .list-item:hover button.addToComplete {
+.search-results:hover button.addToList, .search-results:hover button.learnMore, .list-item:hover button.removeFromList, .list-item:hover button.addToComplete {
    display: block;
+}
+
+button.learnMore, button.addToList {
+    width: inherit;
+    margin-top: 10px;
+}
+
+.titleRow {
+    min-height: 100px;
 }
 
 .card {
