@@ -192,43 +192,45 @@ $("#results").on("click", "button.addToList", function(e){
  });
 
 // Check Local Storage for Completed List and Populate
-var completedList;
 var completedListSorted;
 
 var cList = JSON.parse(localStorage.getItem("completedList")) || [];
 console.log("unsorted", cList);
 
 
-
-
 if (cList) {
-    completedList = cList
 
-    // Sort Completed List
-    completedListSorted = completedList.sort((a, b) => (a.timeStamp > b.timeStamp) ? 1 : -1)
-
-    populateCompletedList();
-   
-    for (var j = 0; j < completedListSorted.length; j++) {
-
-        listURL = "https://www.googleapis.com/books/v1/volumes/" + completedListSorted[j].id
-
-        $.ajax({
-            url : listURL,
-            method : "GET",  
-        }).then(function(response){
-            console.log(response);
-
-            var href = response.volumeInfo.infoLink;
-            var id = response.id;
-
-            $("#"+id).children().children().children().attr("href", href);
-
-        });
-
-    };
+    prepCompletedList();
     
 }
+
+// Sort Completed 
+function prepCompletedList() {
+
+completedListSorted = cList.sort((a, b) => (a.timeStamp > b.timeStamp) ? 1 : -1)
+
+populateCompletedList();
+
+for (var j = 0; j < completedListSorted.length; j++) {
+
+    listURL = "https://www.googleapis.com/books/v1/volumes/" + completedListSorted[j].id
+
+    $.ajax({
+        url : listURL,
+        method : "GET",  
+    }).then(function(response){
+        console.log(response);
+
+        var href = response.volumeInfo.infoLink;
+        var id = response.id;
+
+        $("#"+id).children().children().children().attr("href", href);
+
+    });
+
+  };
+
+};
 
 var booksThisYear = 0;
 var numberRead = localStorage.getItem("readThisYear");
@@ -257,9 +259,9 @@ $(".readingList").on("click", "button.addToComplete", function (e){
         "timeStamp" : timeStamp
     };
 
-    completedList.push(bookInfo);
+    completedListSorted.push(bookInfo);
 
-    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+    localStorage.setItem("completedList",(JSON.stringify(completedListSorted)));
 
     var index = readingList.indexOf(id);
     if (index > -1) {readingList.splice(index,1)};
@@ -300,12 +302,12 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
 
     var id = $(this).parent().parent().parent().attr("id")
 
-    var index = completedList.findIndex(x => x.id === id);
+    var index = completedListSorted.findIndex(x => x.id === id);
     console.log("index", index)
     
-    if (index > -1) {completedList.splice(index,1)};
+    if (index > -1) {completedListSorted.splice(index,1)};
 
-    localStorage.setItem("completedList",(JSON.stringify(completedList)));
+    localStorage.setItem("completedList",(JSON.stringify(completedListSorted)));
 
     booksThisYear--;
     localStorage.setItem("readThisYear", booksThisYear);
@@ -424,7 +426,6 @@ function populateCompletedList() {
         removeBtn.attr("title", "Remove from List");
 
         title.text(titleAPI);
-        // title.attr("href", response.volumeInfo.infoLink)
         title.attr("target", "_blank")
 
         read.append(row);
