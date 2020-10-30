@@ -14,7 +14,9 @@ var searchTitle = $("#byTitle").val().trim();
 var searchAuthor = $("#byAuthor").val().trim();
 
 if (!searchTitle && !searchAuthor) {
-    alert("Please enter either a title or author.")
+    
+    $("#emptySearch").modal("show");
+    // alert("Please enter either a title or author.")
 }
 
 var title;
@@ -318,10 +320,11 @@ $(".completedList").on("click", "button.removeFromComplete", function (e){
     var title = $(this).parent().siblings(".data-info").children().text();
 
     console.log(title);
-    var check = confirm("Are you sure you want to delete \"" + title + "\" from your completed books?")
-    if (check === false) {
-        return;
-    }
+    
+    // var check = confirm("Are you sure you want to delete \"" + title + "\" from your completed books?")
+    // if (check === false) {
+    //     return;
+    // }
 
     var id = $(this).parent().parent().parent().attr("id")
 
